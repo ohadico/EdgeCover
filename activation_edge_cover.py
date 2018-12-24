@@ -7,10 +7,7 @@ random.seed(6)
 G = nx.Graph()
 
 nodes = map(str, range(1, 6))
-terminals = map(str, range(1, 6, 2))
-
-for n in nodes:
-    G.add_node(n)
+terminals = nodes[::2]
 
 for i, n1 in enumerate(nodes[:-1]):
     for n2 in nodes[i+1:]:
