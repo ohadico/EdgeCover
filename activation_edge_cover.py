@@ -1,24 +1,16 @@
-import random
-
-import matplotlib.pyplot as plt
 import networkx as nx
+import matplotlib.pyplot as plt
 
-random.seed(6)
-G = nx.Graph()
+from graph_factory import create_edge_thresholds_graph_with_terminals
 
-nodes = map(str, range(1, 6))
-terminals = nodes[::2]
-
-for i, n1 in enumerate(nodes[:-1]):
-    for n2 in nodes[i+1:]:
-        if n1 != n2:
-            G.add_edge(n1, n2, tu=random.randint(1, 10), tv=random.randint(1, 10))
+graph = create_edge_thresholds_graph_with_terminals()
+G = graph.get_graph()
 
 pos = nx.spring_layout(G, seed=0)
 
-nodes_drawing = nx.draw_networkx_nodes(G, pos, nodelist=terminals, node_color='r')
+nodes_drawing = nx.draw_networkx_nodes(G, pos, nodelist=graph.get_terminals(), node_color='r')
 nodes_drawing.set_edgecolor('black')
-nodes_drawing = nx.draw_networkx_nodes(G, pos, nodelist=set(nodes).difference(terminals), node_color='w')
+nodes_drawing = nx.draw_networkx_nodes(G, pos, nodelist=graph.get_nodes()-graph.get_terminals(), node_color='w')
 nodes_drawing.set_edgecolor('black')
 
 nx.draw_networkx_edges(G, pos)
