@@ -40,6 +40,6 @@ nx.draw_networkx_edge_labels(G, pos,
 
 plt.axis('off')
 
-plt.savefig("activation_edge_cover.png")
+plt.savefig("output/activation_edge_cover.png")
 
 plt.show()

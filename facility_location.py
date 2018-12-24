@@ -37,7 +37,7 @@ nx.draw_networkx_edge_labels(G, pos,
                              rotate=False)
 plt.axis('off')
 
-plt.savefig("facility_location.png")
+plt.savefig("output/facility_location.png")
 
 plt.show()
 

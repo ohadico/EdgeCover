@@ -37,7 +37,7 @@ nx.draw_networkx_edge_labels(G, pos,
                              rotate=False)
 plt.axis('off')
 
-plt.savefig("set_cover.png")
+plt.savefig("output/set_cover.png")
 
 plt.show()
 

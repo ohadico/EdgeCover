@@ -33,7 +33,7 @@ for edge in G.edges:
 nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, rotate=False)
 
 plt.axis('off')
-plt.savefig("levels_reduction.png")
+plt.savefig("output/levels_reduction.png")
 plt.show()
 
 N = nx.Graph()
@@ -68,5 +68,5 @@ nx.draw_networkx_edge_labels(N, pos,
 
 
 plt.axis('off')
-plt.savefig("levels_reduction_reduced.png")
+plt.savefig("output/levels_reduction_reduced.png")
 plt.show()

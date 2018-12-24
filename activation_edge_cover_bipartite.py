@@ -58,6 +58,6 @@ nx.draw_networkx_edge_labels(G, pos,
 
 plt.axis('off')
 
-plt.savefig("stars.png")
+plt.savefig("output/stars.png")
 
 plt.show()

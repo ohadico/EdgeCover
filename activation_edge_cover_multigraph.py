@@ -37,6 +37,6 @@ nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
 
 plt.axis('off')
 
-plt.savefig("multigraph.png")
+plt.savefig("output/multigraph.png")
 
 plt.show()
