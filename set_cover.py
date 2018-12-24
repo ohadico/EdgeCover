@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 G = nx.Graph()
 
 facilities = 'ABC'
-facilities_weights = (35, 85, 43)
+facilities_weights = (1, 1, 1)
 clients = map(str, range(1, 6))
 
 for f, w in zip(facilities, facilities_weights):
@@ -12,11 +12,11 @@ for f, w in zip(facilities, facilities_weights):
 for c in clients:
     G.add_node(c, weight=0)
 
-G.add_edges_from(('1A', '3A', '3C'), weight=1)
-G.add_edges_from(('1B', '2A', '4C', '5C'), weight=2)
-G.add_edges_from(('2B', '4B', '5B'), weight=3)
-G.add_edges_from(('2C', '4A'), weight=4)
-G.add_edges_from(('3B',), weight=5)
+G.add_edges_from(('1A', '3A', '3C'), weight=0)
+G.add_edges_from(('1B', '2A', '4C', '5C'), weight=0)
+G.add_edges_from(('2B', '4B', '5B'), weight=0)
+G.add_edges_from(('2C', '4A'), weight=0)
+G.add_edges_from(('3B',), weight=0)
 
 pos = nx.bipartite_layout(G, facilities)
 
@@ -37,7 +37,7 @@ nx.draw_networkx_edge_labels(G, pos,
                              rotate=False)
 plt.axis('off')
 
-plt.savefig("facility_location.png")
+plt.savefig("set_cover.png")
 
 plt.show()
 
