@@ -1,24 +1,12 @@
-import random
-
 import matplotlib.pyplot as plt
 import networkx as nx
 
-random.seed(6)
-G = nx.Graph()
+from graph_factory import create_edge_thresholds_graph_with_terminals_bipartite
 
-nodes = map(str, range(1, 3))
-terminals = map(str, range(3, 8))
-
-for n in nodes:
-    G.add_node(n)
-
-n1 = nodes[0]
-for n2 in "567":
-    G.add_edge(n1, n2, tu=random.randint(1, 10), tv=random.randint(1, 10))
-
-n1 = nodes[1]
-for n2 in "34":
-    G.add_edge(n1, n2, tu=random.randint(1, 10), tv=random.randint(1, 10))
+graph = create_edge_thresholds_graph_with_terminals_bipartite()
+G = graph.get_graph()
+terminals = graph.get_terminals()
+nodes = graph.get_nodes() - terminals
 
 pos = nx.bipartite_layout(G, terminals)
 new_pos = dict(pos)
