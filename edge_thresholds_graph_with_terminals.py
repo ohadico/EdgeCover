@@ -4,7 +4,7 @@ from typing import List, Dict, Tuple
 
 
 class EdgeThresholdsGraphWithTerminals(object):
-    def __init__(self, G, terminals, thresholds):
+    def __init__(self, G, terminals, thresholds, is_bipartite=False):
         """
         :type G: nx.Graph
         :param terminals: list of nodes that are terminals
@@ -15,6 +15,7 @@ class EdgeThresholdsGraphWithTerminals(object):
         self._graph = G
         self._terminals = set(terminals)
         self._thresholds = thresholds
+        self._is_bipartite = is_bipartite
 
     def get_graph(self):
         return self._graph
@@ -25,8 +26,23 @@ class EdgeThresholdsGraphWithTerminals(object):
     def get_terminals(self):
         return self._terminals
 
-    def get_layout(self, seed=0):
-        return nx.spring_layout(self.get_graph(), seed=seed)
+    @staticmethod
+    def sort_position(terminals_pos, axis=1):
+        return dict(zip(sorted(terminals_pos.keys(), reverse=True),
+                        sorted(terminals_pos.values(), key=lambda p: p[axis])))
+
+    def get_layout(self, seed=0, nodes_to_sort=None):
+        if self._is_bipartite:
+            pos = nx.bipartite_layout(self.get_graph(), self.get_terminals())
+
+            if nodes_to_sort is not None:
+                node_pos = {n: p for n, p in pos.items() if n in nodes_to_sort}
+                new_pos = self.sort_position(node_pos, 1)  # sort by y axis
+                pos.update(new_pos)
+        else:
+            pos = nx.spring_layout(self.get_graph(), seed=seed)
+
+        return pos
 
     def draw(self, terminal_color='r', nonterminal_color='w', save=None):
         G = self.get_graph()

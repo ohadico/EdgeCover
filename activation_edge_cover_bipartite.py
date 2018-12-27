@@ -8,13 +8,7 @@ G = graph.get_graph()
 terminals = graph.get_terminals()
 nodes = graph.get_nodes() - terminals
 
-pos = nx.bipartite_layout(G, terminals)
-new_pos = dict(pos)
-for n in nodes:
-    new_pos.pop(n)
-new_pos = dict(zip(sorted(new_pos.keys(), reverse=True), sorted(new_pos.values(), key=lambda p:p[1])))
-for k,v in new_pos.items():
-    pos[k] = v
+pos = graph.get_layout(nodes_to_sort=graph.get_terminals())
 
 nodes_drawing = nx.draw_networkx_nodes(G, pos, nodelist=terminals, node_color='r')
 nodes_drawing.set_edgecolor('black')
