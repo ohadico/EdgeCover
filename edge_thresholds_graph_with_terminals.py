@@ -14,7 +14,7 @@ class EdgeThresholdsGraphWithTerminals(object):
         """
         self._graph = G
         self._terminals = set(terminals)
-        self._thresholds = set(thresholds)
+        self._thresholds = thresholds
 
     def get_graph(self):
         return self._graph
@@ -41,13 +41,13 @@ class EdgeThresholdsGraphWithTerminals(object):
 
         nx.draw_networkx_edges(G, pos)
 
-        edge_labels = nx.get_edge_attributes(G, 'tu')
+        edge_labels = {e: t[0] for e, t in self._thresholds.items()}
         nx.draw_networkx_edge_labels(G, pos,
                                      edge_labels=edge_labels,
                                      label_pos=0.1,
                                      rotate=False)
 
-        edge_labels = nx.get_edge_attributes(G, 'tv')
+        edge_labels = {e: t[1] for e, t in self._thresholds.items()}
         nx.draw_networkx_edge_labels(G, pos,
                                      edge_labels=edge_labels,
                                      label_pos=0.9,
