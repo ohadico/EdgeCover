@@ -12,10 +12,15 @@ def create_edge_thresholds_graph_with_terminals():
 
     nodes = map(str, range(1, 6))
     terminals = nodes[::2]
+    thresholds = {}
 
     for i, n1 in enumerate(nodes[:-1]):
         for n2 in nodes[i + 1:]:
             if n1 != n2:
-                G.add_edge(n1, n2, tu=random.randint(1, 10), tv=random.randint(1, 10))
+                G.add_edge(n1, n2)
+                thresholds[(n1, n2)] = (random.randint(1, 10), random.randint(1, 10))
 
-    return EdgeThresholdsGraphWithTerminals(G, terminals)
+    nx.set_edge_attributes(G, name='tu', values={e: t[0] for e, t in thresholds.items()})
+    nx.set_edge_attributes(G, name='tv', values={e: t[1] for e, t in thresholds.items()})
+
+    return EdgeThresholdsGraphWithTerminals(G, terminals, thresholds)
