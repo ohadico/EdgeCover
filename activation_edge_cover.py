@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 from graph_factory import create_edge_thresholds_graph_with_terminals
 
 graph = create_edge_thresholds_graph_with_terminals()
+
+pos = graph.get_layout()
+
 G = graph.get_graph()
-
-pos = nx.spring_layout(G, seed=0)
-
 nodes_drawing = nx.draw_networkx_nodes(G, pos, nodelist=graph.get_terminals(), node_color='r')
 nodes_drawing.set_edgecolor('black')
 nodes_drawing = nx.draw_networkx_nodes(G, pos, nodelist=graph.get_nodes()-graph.get_terminals(), node_color='w')

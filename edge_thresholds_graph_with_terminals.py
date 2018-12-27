@@ -20,3 +20,6 @@ class EdgeThresholdsGraphWithTerminals(object):
 
     def get_terminals(self):
         return self._terminals
+
+    def get_layout(self, seed=0):
+        return nx.spring_layout(self.get_graph(), seed=seed)
