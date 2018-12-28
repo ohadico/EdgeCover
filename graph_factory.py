@@ -37,5 +37,5 @@ def create_edge_thresholds_graph_with_terminals_bipartite():
     for n2 in "34":
         G.add_edge(n1, n2, tu=random.randint(1, 10), tv=random.randint(1, 10))
 
-    return EdgeThresholdsGraphWithTerminals(G, terminals, None, is_bipartite=True)
+    return EdgeThresholdsGraphWithTerminals(G, terminals, None)
 

@@ -4,7 +4,7 @@ from typing import List, Dict, Tuple
 
 
 class EdgeThresholdsGraphWithTerminals(object):
-    def __init__(self, G, terminals, thresholds, is_bipartite=False):
+    def __init__(self, G, terminals, thresholds):
         """
         :type G: nx.Graph
         :param terminals: list of nodes that are terminals
@@ -15,7 +15,6 @@ class EdgeThresholdsGraphWithTerminals(object):
         self._graph = G
         self._terminals = set(terminals)
         self._thresholds = thresholds
-        self._is_bipartite = is_bipartite
 
     def get_graph(self):
         return self._graph
@@ -31,8 +30,16 @@ class EdgeThresholdsGraphWithTerminals(object):
         return dict(zip(sorted(terminals_pos.keys(), reverse=True),
                         sorted(terminals_pos.values(), key=lambda p: p[axis])))
 
+    def is_bipartite(self):
+        terminals = self.get_terminals()
+        nonterminals = self.get_nodes() - self.get_terminals()
+        for e in self.get_graph().edges.keys():
+            if e[0] in terminals and e[1] in terminals or e[0] in nonterminals and e[1] in nonterminals:
+                return False
+        return True
+
     def get_layout(self, seed=0, nodes_to_sort=None):
-        if self._is_bipartite:
+        if self.is_bipartite():
             pos = nx.bipartite_layout(self.get_graph(), self.get_terminals())
 
             if nodes_to_sort is not None:
