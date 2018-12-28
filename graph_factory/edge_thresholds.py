@@ -31,7 +31,14 @@ def create_full_multigraph(t, nt, n=1):
     return EdgeThresholdsMultiGraph(terminals, thresholds)
 
 
-def create_bipartite_graph(t, nt):
+def create_bipartite_graph(t, nt, num_of_edges=None):
+    """
+
+    :param t:
+    :param nt:
+    :param num_of_edges: None means full bipartite, negative number is substracted from the full bipartite graph
+    :return:
+    """
     nodes = map(str, range(1, 1 + t + nt))
     terminals = nodes[nt:]
     thresholds = {}
@@ -39,6 +46,12 @@ def create_bipartite_graph(t, nt):
     for n in nodes[:nt]:
         for t in terminals:
             thresholds[(n, t)] = (random.randint(1, 10), random.randint(1, 10))
+
+    if num_of_edges is not None:
+        if num_of_edges < 0:
+            num_of_edges = len(thresholds) + num_of_edges
+        edges = random.sample(thresholds, num_of_edges)
+        thresholds = {e: t for e, t in thresholds.items() if e in edges}
 
     return EdgeThresholdsGraph(terminals, thresholds)
 
