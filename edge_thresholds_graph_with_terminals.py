@@ -15,6 +15,7 @@ class EdgeThresholdsGraphWithTerminals(object):
         self._graph = G
         self._terminals = set(terminals)
         self._thresholds = thresholds
+        self._is_bipartite = None
 
     def get_graph(self):
         return self._graph
@@ -31,12 +32,20 @@ class EdgeThresholdsGraphWithTerminals(object):
                         sorted(terminals_pos.values(), key=lambda p: p[axis])))
 
     def is_bipartite(self):
+        if self._is_bipartite is not None:
+            return self._is_bipartite
+
         terminals = self.get_terminals()
         nonterminals = self.get_nodes() - self.get_terminals()
+
         for e in self.get_graph().edges.keys():
             if e[0] in terminals and e[1] in terminals or e[0] in nonterminals and e[1] in nonterminals:
-                return False
-        return True
+                self._is_bipartite = False
+                break
+        else:
+            self._is_bipartite =  True
+
+        return self._is_bipartite
 
     def get_layout(self, seed=0, nodes_to_sort=None):
         if self.is_bipartite():
