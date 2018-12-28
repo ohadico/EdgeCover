@@ -57,7 +57,8 @@ class EdgeThresholdsGraph(nx.Graph):
 
         return pos
 
-    def draw(self, node_labels=None, terminal_color='r', nonterminal_color='w', save=None):
+    def draw(self, node_labels=None, terminal_color='r', nonterminal_color='w',
+             tu=0.1, tv=0.9, save=None):
         pos = self.get_layout()
 
         nodes_drawing = nx.draw_networkx_nodes(self, pos, nodelist=self.get_terminals(),
@@ -75,14 +76,13 @@ class EdgeThresholdsGraph(nx.Graph):
         edge_labels = {e: t[0] for e, t in self._thresholds.items()}
         nx.draw_networkx_edge_labels(self, pos,
                                      edge_labels=edge_labels,
-                                     label_pos=0.1,
+                                     label_pos=tu,
                                      rotate=False)
 
-        label_pos = 0.9 if not self.is_bipartite() else 0.8
         edge_labels = {e: t[1] for e, t in self._thresholds.items()}
         nx.draw_networkx_edge_labels(self, pos,
                                      edge_labels=edge_labels,
-                                     label_pos=label_pos,
+                                     label_pos=tv,
                                      rotate=False)
 
         plt.axis('off')

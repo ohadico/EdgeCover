@@ -23,6 +23,18 @@ def create_full_graph(t, nt):
 def create_bipartite_graph(t, nt):
     nodes = map(str, range(1, 1 + t + nt))
     terminals = nodes[nt:]
+    thresholds = {}
+
+    for n in nodes[:nt]:
+        for t in terminals:
+            thresholds[(n, t)] = (random.randint(1, 10), random.randint(1, 10))
+
+    return EdgeThresholdsGraph(terminals, thresholds)
+
+
+def create_stars_graph(t, nt):
+    nodes = map(str, range(1, 1 + t + nt))
+    terminals = nodes[nt:]
     division = [0] + sorted([int(random.random() * t)] * (nt - 1)) + [t]
     thresholds = {}
 
