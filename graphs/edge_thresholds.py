@@ -73,17 +73,7 @@ class EdgeThresholdsGraph(nx.Graph):
 
         nx.draw_networkx_edges(self, pos)
 
-        edge_labels = {e: t[0] for e, t in self._thresholds.items()}
-        nx.draw_networkx_edge_labels(self, pos,
-                                     edge_labels=edge_labels,
-                                     label_pos=tu,
-                                     rotate=False)
-
-        edge_labels = {e: t[1] for e, t in self._thresholds.items()}
-        nx.draw_networkx_edge_labels(self, pos,
-                                     edge_labels=edge_labels,
-                                     label_pos=tv,
-                                     rotate=False)
+        self._draw_thresholds(pos, tu, tv)
 
         plt.axis('off')
 
@@ -92,3 +82,14 @@ class EdgeThresholdsGraph(nx.Graph):
 
         plt.show()
 
+    def _draw_thresholds(self, pos, tu, tv):
+        edge_labels = {e: t[0] for e, t in self._thresholds.items()}
+        nx.draw_networkx_edge_labels(self, pos,
+                                     edge_labels=edge_labels,
+                                     label_pos=tu,
+                                     rotate=False)
+        edge_labels = {e: t[1] for e, t in self._thresholds.items()}
+        nx.draw_networkx_edge_labels(self, pos,
+                                     edge_labels=edge_labels,
+                                     label_pos=tv,
+                                     rotate=False)
