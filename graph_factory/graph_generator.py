@@ -136,3 +136,28 @@ def generate_bipartite_multigraph(t, nt, e=1, num_of_edges=None):
     thresholds = dilute_dict(thresholds, num_of_edges)
 
     return EdgeThresholdsMultiGraph(terminals, thresholds)
+
+
+def generate_levels_multigraph(t, nt, levels, e=1, num_of_edges=None):
+    """
+    Generate and return a random bipartite EdgeThresholdsMultiGraph
+    :param t: number of terminals
+    :param nt: number of non terminals
+    :param levels: set of thresholds levels
+    :param e: number of edges between 2 nodes
+    :param num_of_edges: None means full n-multigraph, negative means num of edges to throw from full graph
+    :return: EdgeThresholdsMultiGraph
+    """
+    nodes = map(str, range(1, 1 + t + nt))
+    terminals = nodes[nt:]
+    thresholds = {}
+
+    for n in nodes[:nt]:
+        for t in terminals:
+            if n != t:
+                for i in range(e):
+                    thresholds[(n, t, i)] = (random.choice(levels), random.choice(levels))
+
+    thresholds = dilute_dict(thresholds, num_of_edges)
+
+    return EdgeThresholdsMultiGraph(terminals, thresholds)
