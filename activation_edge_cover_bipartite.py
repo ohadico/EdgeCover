@@ -8,38 +8,5 @@ G = graph.get_graph()
 terminals = graph.get_terminals()
 nodes = graph.get_nodes() - terminals
 
-pos = graph.get_layout(nodes_to_sort=graph.get_terminals())
-
-nodes_drawing = nx.draw_networkx_nodes(G, pos, nodelist=terminals, node_color='r')
-nodes_drawing.set_edgecolor('black')
-nodes_drawing = nx.draw_networkx_nodes(G, pos, nodelist=nodes, node_color='w')
-nodes_drawing.set_edgecolor('black')
-nx.draw_networkx_labels(G, pos, labels={'1': 'b', '2': 'a'})
-
-nx.draw_networkx_edges(G, pos)
-
-edge_labels = nx.get_edge_attributes(G, 'tu')
-for edge_label, value in edge_labels.items():
-    if edge_label[0] not in nodes:
-        edge_labels.pop(edge_label)
-        edge_labels[edge_label[::-1]] = value
-nx.draw_networkx_edge_labels(G, pos,
-                             edge_labels=edge_labels,
-                             label_pos=0.1,
-                             rotate=False)
-
-edge_labels = nx.get_edge_attributes(G, 'tv')
-for edge_label, value in edge_labels.items():
-    if edge_label[0] not in nodes:
-        edge_labels.pop(edge_label)
-        edge_labels[edge_label[::-1]] = value
-nx.draw_networkx_edge_labels(G, pos,
-                             edge_labels=edge_labels,
-                             label_pos=0.8,
-                             rotate=False)
-
-plt.axis('off')
-
-plt.savefig("output/stars.png")
-
-plt.show()
+graph.draw(node_labels=dict(zip(nodes, 'ab')),
+           save="output/stars.png")

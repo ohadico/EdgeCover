@@ -83,10 +83,11 @@ class EdgeThresholdsGraphWithTerminals(object):
                                      label_pos=0.1,
                                      rotate=False)
 
+        label_pos = 0.9 if not self.is_bipartite() else 0.8
         edge_labels = {e: t[1] for e, t in self._thresholds.items()}
         nx.draw_networkx_edge_labels(G, pos,
                                      edge_labels=edge_labels,
-                                     label_pos=0.9,
+                                     label_pos=label_pos,
                                      rotate=False)
 
         plt.axis('off')
