@@ -2,7 +2,7 @@ import random
 
 import networkx as nx
 
-from edge_thresholds_graph_with_terminals import EdgeThresholdsGraphWithTerminals
+from graphs.edge_thresholds import EdgeThresholdsGraph
 
 random.seed(6)
 
@@ -20,7 +20,7 @@ def create_full_graph(t, nt):
                 G.add_edge(n1, n2)
                 thresholds[(n1, n2)] = (random.randint(1, 10), random.randint(1, 10))
 
-    return EdgeThresholdsGraphWithTerminals(G, terminals, thresholds)
+    return EdgeThresholdsGraph(G, terminals, thresholds)
 
 
 def create_bipartite_graph(t, nt):
@@ -36,4 +36,4 @@ def create_bipartite_graph(t, nt):
             G.add_edge(n, t)
             thresholds[(n, t)] = (random.randint(1, 10), random.randint(1, 10))
 
-    return EdgeThresholdsGraphWithTerminals(G, terminals, thresholds)
+    return EdgeThresholdsGraph(G, terminals, thresholds)
