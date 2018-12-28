@@ -47,20 +47,21 @@ class EdgeThresholdsGraphWithTerminals(object):
 
         return self._is_bipartite
 
-    def get_layout(self, seed=0, nodes_to_sort=None):
+    def get_layout(self, seed=0):
         if self.is_bipartite():
             pos = nx.bipartite_layout(self.get_graph(), self.get_terminals())
 
-            if nodes_to_sort is not None:
-                node_pos = {n: p for n, p in pos.items() if n in nodes_to_sort}
-                new_pos = self.sort_position(node_pos, 1)  # sort by y axis
-                pos.update(new_pos)
+            # sort position
+            terminals_pos = {n: p for n, p in pos.items() if n in self.get_terminals()}
+            pos.update(self.sort_position(terminals_pos, 1))  # sort by y axis
+            nonterminals_pos = {n: p for n, p in pos.items() if n not in self.get_terminals()}
+            pos.update(self.sort_position(nonterminals_pos, 1))
         else:
             pos = nx.spring_layout(self.get_graph(), seed=seed)
 
         return pos
 
-    def draw(self, terminal_color='r', nonterminal_color='w', save=None):
+    def draw(self, node_labels=None, terminal_color='r', nonterminal_color='w', save=None):
         G = self.get_graph()
         pos = self.get_layout()
 
@@ -70,6 +71,9 @@ class EdgeThresholdsGraphWithTerminals(object):
         nodes_drawing = nx.draw_networkx_nodes(G, pos, nodelist=self.get_nodes() - self.get_terminals(),
                                                node_color=nonterminal_color)
         nodes_drawing.set_edgecolor('black')
+
+        if node_labels is not None:
+            nx.draw_networkx_labels(G, pos, labels=node_labels)
 
         nx.draw_networkx_edges(G, pos)
 
