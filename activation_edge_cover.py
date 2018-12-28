@@ -1,5 +1,5 @@
-from graph_factory import create_edge_thresholds_graph_with_terminals
+from graph_factory.edge_thresholds import create_full_graph
 
-graph = create_edge_thresholds_graph_with_terminals()
+graph = create_full_graph(3, 2)
 
 graph.draw(save='output/activation_edge_cover.png')

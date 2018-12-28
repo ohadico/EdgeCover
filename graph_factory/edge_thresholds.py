@@ -7,11 +7,11 @@ from edge_thresholds_graph_with_terminals import EdgeThresholdsGraphWithTerminal
 random.seed(6)
 
 
-def create_edge_thresholds_graph_with_terminals():
+def create_full_graph(t, nt):
     G = nx.Graph()
 
-    nodes = map(str, range(1, 6))
-    terminals = nodes[::2]
+    nodes = map(str, range(1, 1 + t + nt))
+    terminals = nodes[nt:]
     thresholds = {}
 
     for i, n1 in enumerate(nodes[:-1]):
@@ -23,7 +23,7 @@ def create_edge_thresholds_graph_with_terminals():
     return EdgeThresholdsGraphWithTerminals(G, terminals, thresholds)
 
 
-def create_edge_thresholds_graph_with_terminals_bipartite(t=5, nt=2):
+def create_bipartite_graph(t, nt):
     G = nx.Graph()
 
     nodes = map(str, range(1, 1 + t + nt))

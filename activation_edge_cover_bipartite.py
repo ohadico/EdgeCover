@@ -1,10 +1,6 @@
-import matplotlib.pyplot as plt
-import networkx as nx
+from graph_factory.edge_thresholds import create_bipartite_graph
 
-from graph_factory import create_edge_thresholds_graph_with_terminals_bipartite
-
-graph = create_edge_thresholds_graph_with_terminals_bipartite()
-G = graph.get_graph()
+graph = create_bipartite_graph(5, 2)
 terminals = graph.get_terminals()
 nodes = graph.get_nodes() - terminals
 
