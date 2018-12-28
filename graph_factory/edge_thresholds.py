@@ -1,11 +1,19 @@
 import random
 
+from graph_factory.utils import dilute_dict
 from graphs.edge_thresholds import EdgeThresholdsGraph
 from graphs.edge_thresholds_multigraph import EdgeThresholdsMultiGraph
 from graphs.facility_location import FacilityLocation
 
 
-def create_full_graph(t, nt):
+def generate_graph(t, nt, num_of_edges=None):
+    """
+    Generate and return a random EdgeThresholdsGraph
+    :param t: number of terminals
+    :param nt: number of non terminals
+    :param num_of_edges: None means full graph, negative means num of edges to throw from full graph
+    :return: EdgeThresholdsGraph
+    """
     nodes = map(str, range(1, 1 + t + nt))
     terminals = nodes[nt:]
     thresholds = {}
@@ -15,10 +23,20 @@ def create_full_graph(t, nt):
             if n1 != n2:
                 thresholds[(n1, n2)] = (random.randint(1, 10), random.randint(1, 10))
 
+    thresholds = dilute_dict(thresholds, num_of_edges)
+
     return EdgeThresholdsGraph(terminals, thresholds)
 
 
-def create_full_multigraph(t, nt, n=1):
+def generate_multigraph(t, nt, n=1, num_of_edges=None):
+    """
+    Generate and return a random EdgeThresholdsMultiGraph
+    :param t: number of terminals
+    :param nt: number of non terminals
+    :param n: number of edges between 2 nodes
+    :param num_of_edges: None means full n-multigraph, negative means num of edges to throw from full graph
+    :return: EdgeThresholdsMultiGraph
+    """
     nodes = map(str, range(1, 1 + t + nt))
     terminals = nodes[nt:]
     thresholds = {}
@@ -29,16 +47,18 @@ def create_full_multigraph(t, nt, n=1):
                 for e in range(n):
                     thresholds[(n1, n2, e)] = (random.randint(1, 10), random.randint(1, 10))
 
+    thresholds = dilute_dict(thresholds, num_of_edges)
+
     return EdgeThresholdsMultiGraph(terminals, thresholds)
 
 
-def create_bipartite_graph(t, nt, num_of_edges=None):
+def generate_bipartite_graph(t, nt, num_of_edges=None):
     """
-
-    :param t:
-    :param nt:
-    :param num_of_edges: None means full bipartite, negative number is substracted from the full bipartite graph
-    :return:
+    Generate and return a random bipartite EdgeThresholdsGraph
+    :param t: number of terminals
+    :param nt: number of non terminals
+    :param num_of_edges: None means full bipartite graph, negative means num of edges to throw from full graph
+    :return: EdgeThresholdsGraph
     """
     nodes = map(str, range(1, 1 + t + nt))
     terminals = nodes[nt:]
@@ -48,36 +68,38 @@ def create_bipartite_graph(t, nt, num_of_edges=None):
         for t in terminals:
             thresholds[(n, t)] = (random.randint(1, 10), random.randint(1, 10))
 
-    if num_of_edges is not None:
-        if num_of_edges < 0:
-            num_of_edges = len(thresholds) + num_of_edges
-        edges = random.sample(thresholds, num_of_edges)
-        thresholds = {e: t for e, t in thresholds.items() if e in edges}
+    thresholds = dilute_dict(thresholds, num_of_edges)
 
     return EdgeThresholdsGraph(terminals, thresholds)
 
 
-def create_stars_graph(t, nt):
-    nodes = map(str, range(1, 1 + t + nt))
-    terminals = nodes[nt:]
-    division = [0] + sorted([int(random.random() * t)] * (nt - 1)) + [t]
+def generate_stars_graph(s, l):
+    """
+    Generate and return a random Forest of Stars
+    :param s: number of stars
+    :param l: number of leafs
+    :return: EdgeThresholdsGraph
+    """
+    nodes = map(str, range(1, 1 + s + l))
+    terminals = nodes[l:]
+    division = [0] + sorted([int(random.random() * s)] * (l - 1)) + [s]
     thresholds = {}
 
-    for i, n in enumerate(nodes[:nt]):
-        for t in terminals[division[i]:division[i+1]]:
-            thresholds[(n, t)] = (random.randint(1, 10), random.randint(1, 10))
+    for i, n in enumerate(nodes[:l]):
+        for s in terminals[division[i]:division[i + 1]]:
+            thresholds[(n, s)] = (random.randint(1, 10), random.randint(1, 10))
 
     return EdgeThresholdsGraph(terminals, thresholds)
 
 
-def create_facility_location(f, c, opening_costs_range, service_costs_range, num_of_edges=None):
+def generate_facility_location_graph(f, c, opening_costs_range, service_costs_range, num_of_edges=None):
     """
-
-    :param num_of_edges:
+    Generate and return a random EdgeThresholdsGraph that represent an instance of Facility Location problem
     :param f: num_of_facilities
     :param c: num_of_clients
-    :param opening_costs_range:
-    :param service_costs_range:
+    :param opening_costs_range: int tuple of (lo, hi) lo included, hi excluded
+    :param service_costs_range: int tuple of (lo, hi) lo included, hi excluded
+    :param num_of_edges: None means full graph, negative means num of edges to throw from full graph
     :return:
     """
     nodes = map(str, range(1, 1 + f + c))
@@ -87,10 +109,6 @@ def create_facility_location(f, c, opening_costs_range, service_costs_range, num
     opening_costs = {f: random.randrange(*opening_costs_range) for f in facilities}
     service_costs = {(c, f): random.randrange(*service_costs_range) for c in clients for f in facilities}
 
-    if num_of_edges is not None:
-        if num_of_edges < 0:
-            num_of_edges = len(service_costs) + num_of_edges
-        edges = random.sample(service_costs, num_of_edges)
-        service_costs = {e: t for e, t in service_costs.items() if e in edges}
+    service_costs = dilute_dict(service_costs, num_of_edges)
 
     return FacilityLocation(opening_costs, service_costs)
