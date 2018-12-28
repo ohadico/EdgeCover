@@ -10,7 +10,7 @@ clients = map(str, range(1, 6))
 for f, w in zip(facilities, facilities_weights):
     G.add_node(f, weight=w)
 for c in clients:
-    G.add_node(c, weight=0)
+    G.add_node(c)
 
 G.add_edges_from(('1A', '3A', '3C'), weight=1)
 G.add_edges_from(('1B', '2A', '4C', '5C'), weight=2)
