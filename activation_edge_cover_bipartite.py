@@ -1,4 +1,4 @@
-from graph_factory.edge_thresholds import generate_bipartite_graph
+from graph_factory.graph_generator import generate_bipartite_graph
 
 graph = generate_bipartite_graph(4, 4)
 

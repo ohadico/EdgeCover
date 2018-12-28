@@ -1,4 +1,4 @@
-from graph_factory.edge_thresholds import generate_multigraph
+from graph_factory.graph_generator import generate_multigraph
 
 graph = generate_multigraph(3, 2, 2)
 

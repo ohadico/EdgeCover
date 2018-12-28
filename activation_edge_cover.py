@@ -1,4 +1,4 @@
-from graph_factory.edge_thresholds import generate_graph
+from graph_factory.graph_generator import generate_graph
 
 graph = generate_graph(3, 2)
 
