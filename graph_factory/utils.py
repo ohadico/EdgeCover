@@ -14,3 +14,7 @@ def dilute_dict(d, num_to_keep=None):
         keys_to_keep = random.sample(d, num_to_keep)
         d = {k: v for k, v in d.items() if k in keys_to_keep}
     return d
+
+
+def new_node_name(n, l, sep=':'):
+    return "{}{}{}".format(n, sep, l)
