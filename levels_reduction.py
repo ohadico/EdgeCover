@@ -1,7 +1,6 @@
-from graph_factory.graph_generator import generate_levels_multigraph
+from graph_factory.graph_generator import generate_facility_location_graph
 
-graph = generate_levels_multigraph(2, 1, (5, 10, 20), 3, -1)
+graph = generate_facility_location_graph(2, 3, (5, 20), (5, 20), -1)
 
-graph.set_bipartite(False)
-
-graph.draw(rotate=False, save='output/levels_reduction.png')
+graph.draw(tu=-0.025, tv=0.8, rotate=False,
+           save="output/levels_reduction.png")
