@@ -32,10 +32,8 @@ class EdgeThresholdsGraph(nx.Graph):
     def get_thresholds_at(self, e):
         return self._thresholds[e]
 
-    @staticmethod
-    def sort_position(terminals_pos, axis=1):
-        return dict(zip(sorted(terminals_pos.keys(), reverse=True),
-                        sorted(terminals_pos.values(), key=lambda p: p[axis])))
+    def set_bipartite(self, is_bipartite):
+        self._is_bipartite = is_bipartite
 
     def is_bipartite(self):
         if self._is_bipartite is not None:
@@ -52,6 +50,11 @@ class EdgeThresholdsGraph(nx.Graph):
 
         return self._is_bipartite
 
+    @staticmethod
+    def sort_position(terminals_pos, axis=1):
+        return dict(zip(sorted(terminals_pos.keys(), reverse=True),
+                        sorted(terminals_pos.values(), key=lambda p: p[axis])))
+
     def get_layout(self, seed=0):
         if self.is_bipartite():
             pos = nx.bipartite_layout(self, self.get_terminals())
@@ -67,7 +70,7 @@ class EdgeThresholdsGraph(nx.Graph):
         return pos
 
     def draw(self, node_labels=None, terminal_color='r', nonterminal_color='w',
-             tu=0.1, tv=0.9, save=None):
+             tu=0.1, tv=0.9, rotate=True, save=None):
         pos = self.get_layout()
 
         nodes_drawing = nx.draw_networkx_nodes(self, pos, nodelist=self.get_terminals(),
@@ -82,7 +85,7 @@ class EdgeThresholdsGraph(nx.Graph):
 
         nx.draw_networkx_edges(self, pos)
 
-        self._draw_thresholds(pos, tu, tv)
+        self._draw_thresholds(pos, tu, tv, rotate)
 
         plt.axis('off')
 
@@ -91,14 +94,14 @@ class EdgeThresholdsGraph(nx.Graph):
 
         plt.show()
 
-    def _draw_thresholds(self, pos, tu, tv):
+    def _draw_thresholds(self, pos, tu, tv, rotate):
         edge_labels = {e: t[0] for e, t in self.get_thresholds()}
-        self._draw_edge_labels(pos, edge_labels, tu)
+        self._draw_edge_labels(pos, edge_labels, tu, rotate)
         edge_labels = {e: t[1] for e, t in self.get_thresholds()}
-        self._draw_edge_labels(pos, edge_labels, tv)
+        self._draw_edge_labels(pos, edge_labels, tv, rotate)
 
-    def _draw_edge_labels(self, pos, edge_labels, loc=0.5):
+    def _draw_edge_labels(self, pos, edge_labels, loc=0.5, rotate=True):
         nx.draw_networkx_edge_labels(self, pos,
                                      edge_labels=edge_labels,
                                      label_pos=loc,
-                                     rotate=False)
+                                     rotate=rotate)

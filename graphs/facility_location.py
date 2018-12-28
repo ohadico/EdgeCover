@@ -10,7 +10,7 @@ class FacilityLocation(EdgeThresholdsGraph):
         thresholds = {e: (c, opening_costs[e[1]]) for e, c in service_costs.items()}
         super(FacilityLocation, self).__init__(terminals, thresholds, **attr)
 
-    def _draw_thresholds(self, pos, tu, tv):
+    def _draw_thresholds(self, pos, tu, tv, rotate):
         facilities = self.get_nonterminals()
         opening_costs = self.get_opening_costs(facilities)
         for f in facilities:
@@ -18,7 +18,7 @@ class FacilityLocation(EdgeThresholdsGraph):
                      opening_costs[f])
 
         edge_labels = {e: t[0] for e, t in self.get_thresholds()}
-        self._draw_edge_labels(pos, edge_labels, tv)
+        self._draw_edge_labels(pos, edge_labels, tv, rotate)
 
     def get_opening_costs(self, facilities):
         opening_costs = {}

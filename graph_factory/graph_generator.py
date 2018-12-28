@@ -112,3 +112,27 @@ def generate_facility_location_graph(f, c, opening_costs_range, service_costs_ra
     service_costs = dilute_dict(service_costs, num_of_edges)
 
     return FacilityLocation(opening_costs, service_costs)
+
+
+def generate_bipartite_multigraph(t, nt, e=1, num_of_edges=None):
+    """
+    Generate and return a random bipartite EdgeThresholdsMultiGraph
+    :param t: number of terminals
+    :param nt: number of non terminals
+    :param e: number of edges between 2 nodes
+    :param num_of_edges: None means full n-multigraph, negative means num of edges to throw from full graph
+    :return: EdgeThresholdsMultiGraph
+    """
+    nodes = map(str, range(1, 1 + t + nt))
+    terminals = nodes[nt:]
+    thresholds = {}
+
+    for n in nodes[:nt]:
+        for t in terminals:
+            if n != t:
+                for i in range(e):
+                    thresholds[(n, t, i)] = (random.randint(1, 10), random.randint(1, 10))
+
+    thresholds = dilute_dict(thresholds, num_of_edges)
+
+    return EdgeThresholdsMultiGraph(terminals, thresholds)
