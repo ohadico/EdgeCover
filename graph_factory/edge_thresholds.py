@@ -2,6 +2,7 @@ import random
 
 from graphs.edge_thresholds import EdgeThresholdsGraph
 from graphs.edge_thresholds_multigraph import EdgeThresholdsMultiGraph
+from graphs.facility_location import FacilityLocation
 
 
 def create_full_graph(t, nt):
@@ -67,3 +68,29 @@ def create_stars_graph(t, nt):
             thresholds[(n, t)] = (random.randint(1, 10), random.randint(1, 10))
 
     return EdgeThresholdsGraph(terminals, thresholds)
+
+
+def create_facility_location(f, c, opening_costs_range, service_costs_range, num_of_edges=None):
+    """
+
+    :param num_of_edges:
+    :param f: num_of_facilities
+    :param c: num_of_clients
+    :param opening_costs_range:
+    :param service_costs_range:
+    :return:
+    """
+    nodes = map(str, range(1, 1 + f + c))
+    facilities = nodes[:f]
+    clients = nodes[f:]
+
+    opening_costs = {f: random.randrange(*opening_costs_range) for f in facilities}
+    service_costs = {(c, f): random.randrange(*service_costs_range) for c in clients for f in facilities}
+
+    if num_of_edges is not None:
+        if num_of_edges < 0:
+            num_of_edges = len(service_costs) + num_of_edges
+        edges = random.sample(service_costs, num_of_edges)
+        service_costs = {e: t for e, t in service_costs.items() if e in edges}
+
+    return FacilityLocation(opening_costs, service_costs)
