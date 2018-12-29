@@ -19,5 +19,5 @@ G.add_edges_from(('3B',), weight=5)
 
 
 graph = convert_to_facility_location(G)
-graph.draw(tu=0.03, tv=0.85, rotate=False,
+graph.draw(tu=0.15, tv=0.03, rotate=False,
            save='output/custom_facility_location.png')

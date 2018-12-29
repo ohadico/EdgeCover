@@ -155,8 +155,14 @@ def generate_levels_multigraph(t, nt, levels, e=1, num_of_edges=None):
     for n in nodes[:nt]:
         for t in terminals:
             if n != t:
-                for i in range(e):
-                    thresholds[(n, t, i)] = (random.choice(levels), random.choice(levels))
+                edges = []
+                while len(edges) < e:
+                    new_edge = (random.choice(levels), random.choice(levels))
+                    if new_edge not in edges:
+                        # same thresholds cant appear twice
+                        edges.append(new_edge)
+                for i, edge in enumerate(edges):
+                    thresholds[(t, n, i)] = edge
 
     thresholds = dilute_dict(thresholds, num_of_edges)
 

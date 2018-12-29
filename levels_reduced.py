@@ -7,5 +7,5 @@ multigraph.draw()
 
 graph = reduce_levels(multigraph)
 
-graph.draw(tu=-0.02, tv=0.8, rotate=False,
+graph.draw(tu=0.2, tv=-0.02, rotate=False,
            save='output/levels_reduced.png')

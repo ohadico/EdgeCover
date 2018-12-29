@@ -14,11 +14,11 @@ class FacilityLocation(EdgeThresholdsGraph):
         facilities = self.get_nonterminals()
         opening_costs = self.get_opening_costs(facilities)
         for f in facilities:
-            plt.text(pos[f][0] + tu, pos[f][1] + tu,
+            plt.text(pos[f][0] + tv, pos[f][1] + tv,
                      opening_costs[f])
 
-        edge_labels = {e: t[0] for e, t in self.get_thresholds()}
-        self._draw_edge_labels(pos, edge_labels, tv, rotate)
+        edge_labels = {e[::-1]: t[0] for e, t in self.get_thresholds()}
+        self._draw_edge_labels(pos, edge_labels, tu, rotate)
 
     def get_opening_costs(self, facilities):
         opening_costs = {}

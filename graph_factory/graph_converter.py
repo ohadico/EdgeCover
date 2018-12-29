@@ -30,7 +30,14 @@ def convert_to_multigraph(G, terminals, t1='tu', t2='tv'):
     :param t2:
     :return:
     """
-    thresholds = {e: (d[t1], d[t2]) for e, d in G.edges.items()}
+    thresholds = {}
+    for e, d in G.edges.items():
+        n1, n2, i = e
+        if n1 not in terminals and n2 in terminals or n1 > n2:
+            # force order in tuple
+            e = n2, n1, i
+            d[t1], d[t2] = d[t2], d[t1]
+        thresholds[e] = (d[t1], d[t2])
     return EdgeThresholdsMultiGraph(terminals, thresholds)
 
 
@@ -47,6 +54,7 @@ def convert_to_facility_location(G, k='weight'):
     service_costs = {}
     for e, d in G.edges.items():
         if e[0] in facilities:
+            # force order in tuple
             e = e[::-1]
         service_costs[e] = d[k]
 
@@ -63,12 +71,12 @@ def reduce_levels(graph, levels=None):
     nodes = graph.get_nonterminals()
     if levels is None:
         levels = {t[0] for e, t in graph.get_thresholds()}
-    nodes_levels = {new_node_name(n, l): l for n in nodes for l in levels}
+    nodes_with_level = {new_node_name(n, l): l for n in nodes for l in levels}
 
-    thresholds = {}
+    service_costs = {}
     for e, t in graph.get_thresholds():
         n1, n2, i = e
-        level, cost = t
-        thresholds[(n2, new_node_name(n1, level))] = cost
+        cost, level = t
+        service_costs[(n1, new_node_name(n2, level))] = cost
 
-    return FacilityLocation(nodes_levels, thresholds)
+    return FacilityLocation(nodes_with_level, service_costs)
