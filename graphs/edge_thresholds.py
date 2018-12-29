@@ -70,7 +70,7 @@ class EdgeThresholdsGraph(nx.Graph):
         return pos
 
     def draw(self, node_labels=None, terminal_color='r', nonterminal_color='w',
-             tu=0.1, tv=0.9, rotate=True, save=None):
+             tu=0.1, tv=0.9, rotate=False, save=None):
         pos = self.get_layout()
 
         nodes_drawing = nx.draw_networkx_nodes(self, pos, nodelist=self.get_terminals(),
